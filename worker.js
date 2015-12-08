@@ -8,13 +8,13 @@
 
 
   // Include SW cache polyfill
-  importScripts("/r3search/js/serviceworker-cache-polyfill.js");
+  importScripts("/offlinefirst/js/serviceworker-cache-polyfill.js");
 
 
   // Cache name definitions
-  var cacheNameStatic = "r3search-static-v4";
-  var cacheNameWikipedia = "r3search-wikipedia-v1";
-  var cacheNameTypekit = "r3search-typekit-v1";
+  var cacheNameStatic = "offlinefirst-static-v4";
+  var cacheNameWikipedia = "offlinefirst-wikipedia-v1";
+  var cacheNameTypekit = "offlinefirst-typekit-v1";
 
   var currentCacheNames = [
     cacheNameStatic,
@@ -29,10 +29,10 @@
       caches.open(cacheNameStatic)
         .then(function (cache) {
           return cache.addAll([
-            "/r3search/",
-            "/r3search/js/app.js",
-            "/r3search/css/app.css",
-            "/r3search/img/loading.svg"
+            "/offlinefirst/",
+            "/offlinefirst/js/app.js",
+            "/offlinefirst/css/app.css",
+            "/offlinefirst/img/loading.svg"
           ]);
         })
     );

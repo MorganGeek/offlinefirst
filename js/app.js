@@ -10,8 +10,8 @@
 
   // Register our ServiceWorker
   if (navigator.serviceWorker) {
-    navigator.serviceWorker.register("/r3search/worker.js", {
-      scope: "/r3search/"
+    navigator.serviceWorker.register("/offlinefirst/worker.js", {
+      scope: "/offlinefirst/"
     }).then(function (reg) {
       console.log("SW register success", reg);
     }, function (err) {
@@ -20,7 +20,7 @@
   }
 
   // localStorage keys
-  var lsHistoryID = "r3search-ls-history";
+  var lsHistoryID = "offlinefirst-ls-history";
 
 
   // DOM references
