@@ -232,3 +232,12 @@ img.thumb {
   .history-clear.show {
     display: block;
   }
+
+html, body {
+    margin:0;
+    padding:0
+}
+canvas {
+    display: block;
+}
+canvas {width: auto; max-width: 200px; height: auto;}
