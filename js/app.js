@@ -668,7 +668,7 @@ var snake = new Snake(game, food);
 
 game.addEntity(food);
 game.addEntity(snake);
-game.start();
+game.start(); 
   }
 
   // Event listeners
