@@ -3,7 +3,8 @@
 
 
   // Make sure we are accessing over https, if not redirect
-  if ((!location.port || location.port === "80") && location.protocol !== "https:" && location.host !== "localhost") {
+  if ((!location.port || location.port === "80") && 
+    location.protocol !== "https:" && location.host !== "localhost" && location.host !== "") {
     location.protocol = "https:";
   }
 
@@ -656,7 +657,7 @@ function Food(game){
   function startGame() {
 // create the canvas element
 var canvas = document.createElement("canvas");
-document.body.appendChild(canvas);
+document.getElementById('game').appendChild(canvas);
 
 /**
  * Game initialization
