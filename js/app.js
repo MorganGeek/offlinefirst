@@ -673,7 +673,7 @@ game.start();
   }
 
   // Event listeners
-  /*historyContainer.addEventListener("click", clickArticle);
+  historyContainer.addEventListener("click", clickArticle);
   suggestionsContainer.addEventListener("click", clickArticle);
   searchForm.addEventListener("submit", submitSearchForm);
   historyButton.addEventListener("click", clickHistoryButton);
@@ -684,7 +684,7 @@ game.start();
 
   // Initialisation
   updateHistory();
-  updateNetworkStatus();*/
+  updateNetworkStatus();
   startGame();
 
 }());
