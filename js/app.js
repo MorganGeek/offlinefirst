@@ -404,6 +404,10 @@ function Game(canvas, options) {
     this.key = 'right';
     this.entities = [];
 
+    if(window.DeviceOrientationEvent) {
+        window.addEventListener("deviceorientation", this.ondeviceorientation.bind(this), true);
+    }
+
     this.options = {
         fps: 15
     };
@@ -486,7 +490,6 @@ Game.prototype.keyBindings = function () {
         down: 40
     };
 
-
     /**
      * Attach keyboard arrows to snake direction
      */
@@ -512,9 +515,36 @@ Game.prototype.keyBindings = function () {
                 if (that.key !== 'up') that.key = 'down';
         }
     };
-
 };
 
+Game.prototype.getDirection = function(value) {
+    var that = this;
+    if (!that.trends) that.trends = [];
+    that.trends.push(value);
+    if (that.trends.length > 2) that.trends = that.trends.slice(1);
+    if (that.trends.length < 2 || value == that.trends[0]) return '';
+    return that.trends[0] > that.trends[1] ? 'left' : 'right';
+};
+
+Game.prototype.ondeviceorientation = function(eventData) {
+    var that = this;
+
+    // gamma is the left-to-right tilt in degrees, where right is positive
+    var tiltLR = eventData.gamma;
+    var direction = this.getDirection(Math.round(tiltLR));// < -7 ? 'left' : Math.round(tiltLR) > 7 ? 'right' : '';
+    var currentAction = new Date().getTime();
+    if (direction !== '' && (!that.lastAction || that.lastAction + 100 < currentAction)) {
+        if (!that.lastKey || that.lastKey === undefined) that.lastKey = 'left';
+        switch(that.lastKey) {
+            case 'right' : that.key = (direction == 'right') ? 'down' : 'up'; break;
+            case 'down': that.key = (direction == 'right') ? 'left' : 'right'; break;
+            case 'left': that.key = (direction == 'right') ? 'up' : 'down'; break;
+            case 'up': that.key = (direction == 'right') ? 'right' : 'left'; break;
+        }
+        that.lastKey = that.key;
+        that.lastAction = currentAction;
+    }
+};
 
 /**
  * The gameloop - and entity (update/draw) calls
@@ -655,21 +685,21 @@ function Food(game){
 
 
   function startGame() {
-// create the canvas element
-var canvas = document.createElement("canvas");
-document.getElementById('game').appendChild(canvas);
+        // create the canvas element
+        var canvas = document.createElement("canvas");
+        document.getElementById('game').appendChild(canvas);
 
-/**
- * Game initialization
- * and entity preparation
- */
-var game = new Game(canvas);
-var food = new Food(game);
-var snake = new Snake(game, food);
+        /**
+         * Game initialization
+         * and entity preparation
+         */
+        var game = new Game(canvas);
+        var food = new Food(game);
+        var snake = new Snake(game, food);
 
-game.addEntity(food);
-game.addEntity(snake);
-game.start(); 
+        game.addEntity(food);
+        game.addEntity(snake);
+        game.start();
   }
 
   // Event listeners
