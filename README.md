@@ -1,8 +1,10 @@
-R3SEARCH
-========
+Offline first demo app for mobile devices
+=========================================
 
-A simple app that makes use of Service Workers to enable offline access. It's a search interface to [wikipedia](http://en.wikipedia.org/) that shows a snippet of an article along with an image if available. The articles and images are cached using a service worker so you can then view them at a later date without needing network access. Granted it's not terribly useful but it should help explore the basic concepts of service workers.
+A simple app that makes use of Service Workers to enable offline access.
+In addition, some experiments are made for the use of other Web API (such as Device Orientation API) for offline use.
 
-[Blog post](http://blog.lamplightdev.com/2015/01/06/A-Simple-ServiceWorker-App/)
+[Demo](https://morgangeek.github.io/offlinefirst/)
 
-[Demo](https://lamplightdev.github.io/r3search/)
+Inspired by :
+[Original Blog post](http://blog.lamplightdev.com/2015/01/06/A-Simple-ServiceWorker-App/)
