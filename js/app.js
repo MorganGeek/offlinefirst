@@ -517,13 +517,24 @@ Game.prototype.keyBindings = function () {
     };
 };
 
-Game.prototype.getDirection = function(value) {
+Game.prototype.getDirection = function(valueLR, valueUD) {
     var that = this;
-    if (!that.trends) that.trends = [];
-    that.trends.push(value);
-    if (that.trends.length > 2) that.trends = that.trends.slice(1);
-    if (that.trends.length < 2 || value == that.trends[0]) return '';
-    if (Math.abs(that.trends[1] - that.trends[0]) > 2) return that.trends[0] > that.trends[1] ? 'left' : 'right';
+    if (!that.trendsLR) that.trendsLR = [];
+    if (!that.trendsUD) that.trendsUD = [];
+    that.trendsLR.push(valueLR);
+    that.trendsUD.push(valueUD);
+    if (that.trendsLR.length > 2) that.trendsLR = that.trendsLR.slice(1);
+    if (that.trendsUD.length > 2) that.trendsUD = that.trendsUD.slice(1);
+    var hasLRChanges = (that.trendsLR.length >= 2 && valueLR != that.trendsLR[0]),
+        hasUDChanges = (that.trendsUD.length >= 2 && valueUD != that.trendsUD[0]);
+    var strongestChanges = Math.abs(that.trendsLR[1] - that.trendsLR[0])
+                        >= Math.abs(that.trendsUD[1] - that.trendsUD[0]) ? 'LR' : 'UD';
+    if (hasLRChanges && strongestChanges == 'LR') {
+        if (Math.abs(that.trendsLR[1] - that.trendsLR[0]) > 2) return that.trendsLR[0] > that.trendsLR[1] ? 'left' : 'right';
+    }
+    if (hasUDChanges && strongestChanges == 'UD') {
+        if (Math.abs(that.trendsUD[1] - that.trendsUD[0]) > 2) return that.trendsUD[0] > that.trendsUD[1] ? 'up' : 'down';
+    }
     return '';
 };
 
@@ -532,17 +543,11 @@ Game.prototype.ondeviceorientation = function(eventData) {
 
     // gamma is the left-to-right tilt in degrees, where right is positive
     var tiltLR = eventData.gamma;
-    var direction = this.getDirection(Math.round(tiltLR));
+    var tiltUD = eventData.beta;
+    var direction = this.getDirection(Math.round(tiltLR), Math.round(tiltUD));
     var currentAction = new Date().getTime();
-    if (direction !== '' && (!that.lastAction || that.lastAction + 85 < currentAction)) {
-        if (!that.lastKey || that.lastKey === undefined) that.lastKey = 'left';
-        switch(that.lastKey) {
-            case 'right' : that.key = (direction == 'right') ? 'down' : 'up'; break;
-            case 'down': that.key = (direction == 'right') ? 'right' : 'left'; break;
-            case 'left': that.key = (direction == 'right') ? 'up' : 'down'; break;
-            case 'up': that.key = (direction == 'right') ? 'right' : 'left'; break;
-        }
-        that.lastKey = that.key;
+    if (direction !== '' && (!that.lastAction || that.lastAction + 60 < currentAction)) {
+        that.key = direction;
         that.lastAction = currentAction;
     }
 };
