@@ -523,7 +523,8 @@ Game.prototype.getDirection = function(value) {
     that.trends.push(value);
     if (that.trends.length > 2) that.trends = that.trends.slice(1);
     if (that.trends.length < 2 || value == that.trends[0]) return '';
-    return that.trends[0] > that.trends[1] ? 'left' : 'right';
+    if (Math.abs(that.trends[1] - that.trends[0]) > 2) return that.trends[0] > that.trends[1] ? 'left' : 'right';
+    return '';
 };
 
 Game.prototype.ondeviceorientation = function(eventData) {
@@ -531,13 +532,13 @@ Game.prototype.ondeviceorientation = function(eventData) {
 
     // gamma is the left-to-right tilt in degrees, where right is positive
     var tiltLR = eventData.gamma;
-    var direction = this.getDirection(Math.round(tiltLR));// < -7 ? 'left' : Math.round(tiltLR) > 7 ? 'right' : '';
+    var direction = this.getDirection(Math.round(tiltLR));
     var currentAction = new Date().getTime();
-    if (direction !== '' && (!that.lastAction || that.lastAction + 100 < currentAction)) {
+    if (direction !== '' && (!that.lastAction || that.lastAction + 85 < currentAction)) {
         if (!that.lastKey || that.lastKey === undefined) that.lastKey = 'left';
         switch(that.lastKey) {
             case 'right' : that.key = (direction == 'right') ? 'down' : 'up'; break;
-            case 'down': that.key = (direction == 'right') ? 'left' : 'right'; break;
+            case 'down': that.key = (direction == 'right') ? 'right' : 'left'; break;
             case 'left': that.key = (direction == 'right') ? 'up' : 'down'; break;
             case 'up': that.key = (direction == 'right') ? 'right' : 'left'; break;
         }
