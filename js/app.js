@@ -409,7 +409,7 @@ function Game(canvas, options) {
     }
 
     this.options = {
-        fps: 15
+        fps: 5
     };
 
     if (options) {
